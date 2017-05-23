@@ -1,5 +1,9 @@
 package com.compassites.channels.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,14 +22,21 @@ public class AgeGroupDAOImpl implements AgeGroupDAO {
 	@Override
 	public int createAgeGroup(AgeGroupRestModel ageGroupRestModel) {
 		String sql = ChannelConstants.createAgeGroupQuery;
+		
+		String createdDate = null;
+		
+		UUID uuid = UUID.randomUUID();
+		String randomUUIDString = uuid.toString();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		createdDate = sdf.format(new Date());
 
-		return jdbcTemplate.update(sql, ageGroupRestModel.getAgeGroupMin(), ageGroupRestModel.getAgeGroupMax(),ageGroupRestModel.getAgeGroupDescription(),
-				ageGroupRestModel.getCreatedDate(), ageGroupRestModel.getModifiedUserId(),
-				ageGroupRestModel.getModifiedDate(), ageGroupRestModel.getIsActive());
+		return jdbcTemplate.update(sql, randomUUIDString ,ageGroupRestModel.getAgeGroupMin(), ageGroupRestModel.getAgeGroupMax(),
+				ageGroupRestModel.getAgeGroupDescription(), createdDate, ageGroupRestModel.getModifiedUserId());
 	}
 
 	@Override
-	public AgeGroupModel retrieveAgeGroup(int ageGroupId) {
+	public AgeGroupModel retrieveAgeGroup(String ageGroupId) {
 		String selectQuery = ChannelConstants.selectAgeGroupQuery;
 
 		AgeGroupModel ageGroupModel = (AgeGroupModel) jdbcTemplate.queryForObject(selectQuery,
@@ -36,11 +47,10 @@ public class AgeGroupDAOImpl implements AgeGroupDAO {
 	}
 
 	@Override
-	public int updateAgeGroupEntry(AgeGroupModel ageGroupModel) {
+	public int updateAgeGroupEntry(AgeGroupRestModel ageGroupRestModel, String ageGroupId) {
 		String sql = ChannelConstants.updateAgeGroupQuery;
-		return jdbcTemplate.update(sql, ageGroupModel.getAgeGroupMin(), ageGroupModel.getAgeGroupMax(),ageGroupModel.getAgeGroupDescription(),
-				ageGroupModel.getCreatedDate(), ageGroupModel.getModifiedUserId(),
-				ageGroupModel.getModifiedDate(), ageGroupModel.getIsActive(), ageGroupModel.getAgeGroupId());
+		return jdbcTemplate.update(sql, ageGroupRestModel.getAgeGroupMin(), ageGroupRestModel.getAgeGroupMax(),ageGroupRestModel.getAgeGroupDescription(),
+				ageGroupRestModel.getModifiedUserId(), ageGroupId);
 	}
 
 	@Override

@@ -7,9 +7,9 @@ public interface AgeGroupDAO {
 
 	int createAgeGroup(AgeGroupRestModel ageGroupRestModel);
 
-	AgeGroupModel retrieveAgeGroup(int ageGroupId);
+	AgeGroupModel retrieveAgeGroup(String ageGroupId);
 
-	int updateAgeGroupEntry(AgeGroupModel ageGroupModel);
+	int updateAgeGroupEntry(AgeGroupRestModel ageGroupRestModel, String ageGroupId);
 
 	int deleteAgeGroupEntry(int ageGroupId);
 

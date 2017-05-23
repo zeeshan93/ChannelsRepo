@@ -1,7 +1,7 @@
 package com.compassites.channels.daoModel;
 
 public class AgeGroupModel {
-	private int ageGroupId;
+	private String ageGroupId;
 	private int ageGroupMin;
 	private int ageGroupMax;
 	private String ageGroupDescription;
@@ -10,10 +10,10 @@ public class AgeGroupModel {
 	private String modifiedDate;
 	private int isActive;
 	
-	public int getAgeGroupId() {
+	public String getAgeGroupId() {
 		return ageGroupId;
 	}
-	public void setAgeGroupId(int ageGroupId) {
+	public void setAgeGroupId(String ageGroupId) {
 		this.ageGroupId = ageGroupId;
 	}
 	public int getAgeGroupMin() {
