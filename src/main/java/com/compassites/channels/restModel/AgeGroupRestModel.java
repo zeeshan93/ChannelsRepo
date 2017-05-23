@@ -4,10 +4,10 @@ public class AgeGroupRestModel {
 	private int ageGroupMin;
 	private int ageGroupMax;
 	private String ageGroupDescription;
-	private String createdDate;
+//	private String createdDate;
 	private String modifiedUserId;
-	private String modifiedDate;
-	private int isActive;
+//	private String modifiedDate;
+//	private int isActive;
 	public int getAgeGroupMin() {
 		return ageGroupMin;
 	}
@@ -26,30 +26,30 @@ public class AgeGroupRestModel {
 	public void setAgeGroupDescription(String ageGroupDescription) {
 		this.ageGroupDescription = ageGroupDescription;
 	}
-	public String getCreatedDate() {
+	/*public String getCreatedDate() {
 		return createdDate;
 	}
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
-	}
+	}*/
 	public String getModifiedUserId() {
 		return modifiedUserId;
 	}
 	public void setModifiedUserId(String modifiedUserId) {
 		this.modifiedUserId = modifiedUserId;
 	}
-	public String getModifiedDate() {
+	/*public String getModifiedDate() {
 		return modifiedDate;
 	}
 	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
-	}
-	public int getIsActive() {
+	}*/
+	/*public int getIsActive() {
 		return isActive;
 	}
 	public void setIsActive(int isActive) {
 		this.isActive = isActive;
-	}
+	}*/
 	
 	
 }

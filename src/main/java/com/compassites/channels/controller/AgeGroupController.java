@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.compassites.channels.Exception.AgeGroupException;
 import com.compassites.channels.daoModel.AgeGroupModel;
 import com.compassites.channels.restModel.AgeGroupRestModel;
 import com.compassites.channels.service.AgeGroupService;
@@ -20,23 +21,27 @@ public class AgeGroupController {
 	private AgeGroupService ageGroupService;
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public JSONObject createCategory(@RequestBody AgeGroupRestModel ageGroupRestModel){
+	public JSONObject createCategory(@RequestBody AgeGroupRestModel ageGroupRestModel) throws AgeGroupException{
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
-		jsonObj.put("message", "Adding age group "+ageGroupService.createAgeGroup(ageGroupRestModel));
+		try {
+			jsonObj.put("message", "Adding age-group "+ageGroupService.createAgeGroup(ageGroupRestModel));
+		} catch (AgeGroupException e) {
+			throw new AgeGroupException(e.getMessage());
+		}
 		return jsonObj;
 	}
 	
 	@RequestMapping(value = "/retrieve", method = RequestMethod.GET)
-	public AgeGroupModel retrieveAgeGroupEntry(@RequestParam(value = "ageGroupId") int ageGroupId){
+	public AgeGroupModel retrieveAgeGroupEntry(@RequestParam(value = "ageGroupId") String ageGroupId){
 		return ageGroupService.retrieveAgeGroup(ageGroupId);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.PATCH)
-	public JSONObject updateAgeGroupEntry(@RequestBody AgeGroupModel ageGroupModel){		
+	public JSONObject updateAgeGroupEntry(@RequestBody AgeGroupRestModel ageGroupRestModel, @RequestParam("ageGroupId") String ageGroupId){		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
-		jsonObj.put("message", "Updating age group entry is "+ageGroupService.updateAgeGroupEntry(ageGroupModel));
+		jsonObj.put("message", "Updating age group entry is "+ageGroupService.updateAgeGroupEntry(ageGroupRestModel, ageGroupId));
 		return jsonObj;
 	}
 	
