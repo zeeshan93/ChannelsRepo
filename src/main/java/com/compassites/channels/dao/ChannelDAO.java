@@ -3,15 +3,16 @@ package com.compassites.channels.dao;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.compassites.channels.daoModel.ChannelModel;
+import com.compassites.channels.restModel.ChannelRestModel;
 public interface ChannelDAO {
-	public int createChannels(ChannelModel channels);
+	public int createChannels(ChannelRestModel channels);
 
 	//public ChannelModel retreiveChannles(int channels);
-	public ChannelModel retreiveChannles(int channel_id);
-	public int deleteChannel(int channel_id);
-	public int updateChannels(ChannelModel channelModel,int channel_id);
-	public String saveProfileImage(MultipartFile profileImage,String mobnumb,int channel_id);
-	public String uploadContent(MultipartFile profileImage,String mobnumb, int channel_id);
+	public ChannelModel retreiveChannels(String channelId);
+	public int deleteChannel(String channelId);
+	public int updateChannels(ChannelRestModel channelModel,String channelId);
+	public String saveProfileImage(MultipartFile profileImage,String mobnumb,String channelId);
+	public String uploadContent(MultipartFile profileImage,String mobnumb, String channel_id);
 
 
 }

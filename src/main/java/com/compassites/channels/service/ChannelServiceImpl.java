@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.compassites.channels.dao.ChannelDAO;
 import com.compassites.channels.daoModel.ChannelModel;
+import com.compassites.channels.restModel.ChannelRestModel;
 
 @Service
 public class ChannelServiceImpl implements ChannelService {
@@ -14,36 +15,46 @@ public class ChannelServiceImpl implements ChannelService {
 	ChannelDAO channelsDAO;
 
 	@Override
-	public int createChannels(ChannelModel channels) {
-		return channelsDAO.createChannels(channels);
+	public String createChannels(ChannelRestModel channels) {
+		if (channelsDAO.createChannels(channels) > 0)
+			// insert into transaction table channel age and channel category
+			
+			return "success";
+		else
+			return "failed";
 	}
 
 	@Override
-	public ChannelModel retreiveChannles(int channel_id) {
-		return channelsDAO.retreiveChannles(channel_id);
-
+	public ChannelModel retreiveChannels(String channelId) {
+		return channelsDAO.retreiveChannels(channelId);
 	}
 
 	@Override
-	public int deleteChannel(int channel_id) {
-		return channelsDAO.deleteChannel(channel_id);
+	public String deleteChannel(String channelId) {
+		if (channelsDAO.deleteChannel(channelId) > 0)
+			return "success";
+		else
+			return "failed";
 	}
 
 	@Override
-	public int updateChannels(ChannelModel channelModel,int channel_id) {
-		return channelsDAO.updateChannels(channelModel,channel_id);
+	public String updateChannels(ChannelRestModel channelModel,String channelId) {
+		if (channelsDAO.updateChannels(channelModel,channelId) > 0)
+			return "success";
+		else
+			return "failed";
 	}
 
 	@Override
-	public String saveProfileImage(MultipartFile profileImage, String mobnumb,int channel_id) {
+	public String saveProfileImage(MultipartFile profileImage, String mobnumb,String channelId) {
 		
-	    return channelsDAO.saveProfileImage(profileImage,mobnumb,channel_id);
+	    return channelsDAO.saveProfileImage(profileImage,mobnumb,channelId);
 	}
 
 	@Override
-	public String uploadContent(MultipartFile profileImage, String mobnumb, int channel_id) {
+	public String uploadContent(MultipartFile profileImage, String mobnumb, String channelId) {
 
-		return channelsDAO.uploadContent(profileImage, mobnumb, channel_id);
+		return channelsDAO.uploadContent(profileImage, mobnumb, channelId);
 	}
 
 	

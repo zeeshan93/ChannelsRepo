@@ -3,7 +3,7 @@ package com.compassites.channels.daoModel;
 
 
 public class ChannelModel {
-	private int channel_id;
+	private String channel_id;
 	private String channel_created_user_id;
 	private String channel_title;
 	private String channel_profile_image_path;
@@ -14,11 +14,11 @@ public class ChannelModel {
 	private String modified_date;
 	private int isactive;
 
-	public int getChannel_id() {
+	public String getChannel_id() {
 		return channel_id;
 	}
 
-	public void setChannel_id(int channel_id) {
+	public void setChannel_id(String channel_id) {
 		this.channel_id = channel_id;
 	}
 

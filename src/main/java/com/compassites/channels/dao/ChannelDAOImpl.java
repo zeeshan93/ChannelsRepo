@@ -2,6 +2,9 @@ package com.compassites.channels.dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 //import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.compassites.channels.daoModel.ChannelModel;
+import com.compassites.channels.restModel.ChannelRestModel;
 
 @Repository
 public class ChannelDAOImpl implements ChannelDAO {
@@ -33,21 +37,27 @@ public class ChannelDAOImpl implements ChannelDAO {
 	private String profileImageUrl;
 
 	@Override
-	public int createChannels(ChannelModel channels) {
-		String sql = "INSERT INTO channels(channel_id, channel_created_user_id, channel_title, channel_profile_image_path, channel_description, channel_prefer_gender, 	created_date, modified_user_id, modified_date, isactive) VALUES(?,?,?,?,?,?,?,?,?,?)";
-		return jdbcTemplate.update(sql, channels.getChannel_id(), channels.getChannel_created_user_id(),
-				channels.getChannel_title(), channels.getChannel_profile_image_path(),
-				channels.getChannel_description(), channels.getChannel_prefer_gender(), channels.getCreated_date(),
-				channels.getModified_user_id(), channels.getModified_date(), channels.getIsactive());
+	public int createChannels(ChannelRestModel channels) {
 
+		UUID uuid = UUID.randomUUID();
+		String channelId = uuid.toString();
+
+		String createdDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		createdDate = sdf.format(new Date());
+
+		String sql = "INSERT INTO channels(channel_id, channel_created_user_id, channel_title, channel_profile_image_path, channel_description, channel_prefer_gender, created_date, modified_user_id) VALUES(?,?,?,?,?,?,?,?)";
+		return jdbcTemplate.update(sql, channelId, channels.getChannelCreatedUserId(), channels.getChannelTitle(),
+				channels.getChannelProfileImagePath(), channels.getChannelDescription(),
+				channels.getChannelPreferGender(), createdDate, channels.getModifiedUserId());
 	}
 
 	@Override
-	public ChannelModel retreiveChannles(int channel_id) {
+	public ChannelModel retreiveChannels(String channelId) {
 
 		String selectQuery = "select * from channels where channel_id = ?";
 
-		ChannelModel channelModel = (ChannelModel) jdbcTemplate.queryForObject(selectQuery, new Object[] { channel_id },
+		ChannelModel channelModel = (ChannelModel) jdbcTemplate.queryForObject(selectQuery, new Object[] { channelId },
 				new BeanPropertyRowMapper(ChannelModel.class));
 
 		return channelModel;
@@ -55,47 +65,45 @@ public class ChannelDAOImpl implements ChannelDAO {
 	}
 
 	@Override
-	public int deleteChannel(int channel_id) {
+	public int deleteChannel(String channelId) {
 		String sql = "DELETE FROM channels where channel_id = ?";
-		return jdbcTemplate.update(sql, channel_id);
+		return jdbcTemplate.update(sql, channelId);
 	}
 
 	@Override
-	public int updateChannels(ChannelModel channelModel, int channel_id) {
-		String sql = "UPDATE channels SET  channel_created_user_id = ? , channel_title = ? , channel_profile_image_path = ?, channel_description = ? , channel_prefer_gender = ? , created_date = ? , modified_user_id = ? , modified_date = ? , isactive = ? WHERE channel_id = ? ";
-		return jdbcTemplate.update(sql, channelModel.getChannel_created_user_id(), channelModel.getChannel_title(),
-				channelModel.getChannel_profile_image_path(), channelModel.getChannel_description(),
-				channelModel.getChannel_prefer_gender(), channelModel.getCreated_date(),
-				channelModel.getModified_user_id(), channelModel.getModified_date(), channelModel.getIsactive(),
-				channelModel.getChannel_id());
+	public int updateChannels(ChannelRestModel channelModel, String channelId) {
+		String sql = "UPDATE channels SET  channel_created_user_id = ? , channel_title = ? , channel_profile_image_path = ?, channel_description = ? , channel_prefer_gender = ? , modified_user_id = ? WHERE channel_id = ? ";
+		return jdbcTemplate.update(sql, channelModel.getChannelCreatedUserId(), channelModel.getChannelTitle(),
+				channelModel.getChannelProfileImagePath(), channelModel.getChannelDescription(),
+				channelModel.getChannelPreferGender(), channelModel.getModifiedUserId(), channelId);
 	}
 
 	@Override
-	public String saveProfileImage(MultipartFile profileImage,String mobnumb, int channel_id) {
+	public String saveProfileImage(MultipartFile profileImage,String mobnumb, String channelId) {
 
-		return this.getFile(profileImage,mobnumb,channel_id);
+		return this.getFile(profileImage,mobnumb,channelId);
 	}
 	
 	
 
 	@Override
-	public String uploadContent(MultipartFile profileImage, String mobnumb, int channel_id) {
-		return this.getFile(profileImage,mobnumb,channel_id);
+	public String uploadContent(MultipartFile profileImage, String mobnumb, String channelId) {
+		return this.getFile(profileImage,mobnumb,channelId);
 	}
 	
 
-	public String getFile(MultipartFile profileImage,String mobnumb,int channel_id) {
+	public String getFile(MultipartFile profileImage,String mobnumb,String channelId) {
 		File file = null;
 		try {
 
 			String profileImagesDir = env.getProperty("profile.image.url");
-			String uploadingDir = profileImagesDir + "/"+channel_id+"/";
+			String uploadingDir = profileImagesDir + "/"+channelId+"/";
 
 			boolean flag = new File(uploadingDir).mkdirs();
 			
 			String fileExtension = this.getFileExtension(profileImage.getOriginalFilename());
 			//UUID fileName_UUID = UUID.randomUUID();
-			file = new File(uploadingDir + mobnumb + "-"+ channel_id + "." + fileExtension);
+			file = new File(uploadingDir + mobnumb + "-"+ channelId + "." + fileExtension);
 			/*Tika tika = new Tika();
 			String filetype = tika.detect(file);*/
 			profileImage.transferTo(file);
