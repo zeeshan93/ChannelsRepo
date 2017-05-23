@@ -1,11 +1,16 @@
 package com.compassites.channels.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.compassites.channels.daoModel.CategoryModel;
+import com.compassites.channels.restModel.CategoryRestModel;
 import com.compassites.channels.utils.ChannelConstants;
 
 @Repository
@@ -15,7 +20,15 @@ public class CategoryDAOImpl implements CategoryDAO {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public int createCategory(CategoryModel categoryModel) {
+	public int createCategory(CategoryRestModel categoryModel) {
+
+		UUID uuid = UUID.randomUUID();
+		String categoryId = uuid.toString();
+		
+		String createdDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		createdDate = sdf.format(new Date());
+		
 		String sql = ChannelConstants.createCategoryQuery;
 		/*   
 		 * 
@@ -49,13 +62,12 @@ public class CategoryDAOImpl implements CategoryDAO {
 		 * 
 		 */
 
-		return jdbcTemplate.update(sql, categoryModel.getCategoryName(), categoryModel.getCategoryCreatedUserId(),
-				categoryModel.getCategoryCreatedDate(), categoryModel.getModifiedUserId(),
-				categoryModel.getModifiedDate(), categoryModel.getIsActive());
+		return jdbcTemplate.update(sql, categoryId, categoryModel.getCategoryName(), categoryModel.getCategoryCreatedUserId(),
+				createdDate, categoryModel.getModifiedUserId());
 	}
 
 	@Override
-	public CategoryModel retrieveCategory(int categoryId) {
+	public CategoryModel retrieveCategory(String categoryId) {
 		String selectQuery = ChannelConstants.selectCategoryQuery;
 
 		CategoryModel categoryModel = (CategoryModel) jdbcTemplate.queryForObject(selectQuery,
@@ -66,15 +78,14 @@ public class CategoryDAOImpl implements CategoryDAO {
 	}
 
 	@Override
-	public int updateCategory(CategoryModel categoryModel) {
+	public int updateCategory(CategoryRestModel categoryModel, String categoryId) {
 		String sql = ChannelConstants.updateCategoryQuery;
 		return jdbcTemplate.update(sql, categoryModel.getCategoryName(), categoryModel.getCategoryCreatedUserId(),
-				categoryModel.getCategoryCreatedDate(), categoryModel.getModifiedUserId(),
-				categoryModel.getModifiedDate(), categoryModel.getIsActive(), categoryModel.getCategoryId());
+				categoryModel.getModifiedUserId(), categoryId);
 	}
 
 	@Override
-	public int deleteCategory(int categoryId) {
+	public int deleteCategory(String categoryId) {
 		String sql = ChannelConstants.deleteCategoryQuery;
 		return jdbcTemplate.update(sql, categoryId);
 	}

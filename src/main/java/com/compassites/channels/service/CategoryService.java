@@ -1,15 +1,16 @@
 package com.compassites.channels.service;
 
 import com.compassites.channels.daoModel.CategoryModel;
+import com.compassites.channels.restModel.CategoryRestModel;
 
 public interface CategoryService {
 
-	String createCategory(CategoryModel categoryModel);
+	String createCategory(CategoryRestModel categoryModel);
 
-	CategoryModel retrieveCategory(int categoryId);
+	CategoryModel retrieveCategory(String categoryId);
 
-	String updateCategory(CategoryModel categoryModel);
+	String updateCategory(CategoryRestModel categoryModel, String categoryId);
 
-	String deleteCategory(int categoryId);
+	String deleteCategory(String categoryId);
 
 }

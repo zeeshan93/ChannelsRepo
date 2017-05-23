@@ -1,7 +1,7 @@
 package com.compassites.channels.daoModel;
 
 public class CategoryModel {
-	private int categoryId;
+	private String categoryId;
 	private String categoryName;
 	private String categoryCreatedUserId;
 	private String categoryCreatedDate;
@@ -9,10 +9,10 @@ public class CategoryModel {
 	private String modifiedDate;
 	private int isActive;
 	
-	public int getCategoryId() {
+	public String getCategoryId() {
 		return categoryId;
 	}
-	public void setCategoryId(int categoryId) {
+	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
 	public String getCategoryName() {

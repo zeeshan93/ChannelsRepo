@@ -31,9 +31,9 @@ public final class ChannelConstants {
 
 	}
 
-	public static final String createCategoryQuery = "INSERT INTO category(category_name,category_created_user_id,created_date,modified_user_id,modified_date,isactive) VALUES(?,?,?,?,?,?)";
+	public static final String createCategoryQuery = "INSERT INTO category(category_id, category_name,category_created_user_id,created_date,modified_user_id) VALUES(?,?,?,?,?)";
 	public static final String selectCategoryQuery = "select * from category where category_id = ?";
-	public static final String updateCategoryQuery =  "UPDATE category SET category_name = ? , category_created_user_id = ? , created_date = ? , modified_user_id = ?, modified_date = ? , isactive = ? where category_id = ?";
+	public static final String updateCategoryQuery =  "UPDATE category SET category_name = ? , category_created_user_id = ? , modified_user_id = ? where category_id = ?";
 	public static final String deleteCategoryQuery = "DELETE FROM category where category_id = ?";
 	
 	public static final String createAgeGroupQuery = "INSERT INTO age_group(age_group_id,age_group_min,age_group_max,age_group_description,created_date,modified_user_id) VALUES(?,?,?,?,?,?)";

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.compassites.channels.dao.CategoryDAO;
 import com.compassites.channels.daoModel.CategoryModel;
+import com.compassites.channels.restModel.CategoryRestModel;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -13,7 +14,7 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryDAO categoryDAO;
 	
 	@Override
-	public String createCategory(CategoryModel categoryModel) {
+	public String createCategory(CategoryRestModel categoryModel) {
 		if(categoryDAO.createCategory(categoryModel) > 0){
 			return "successful";
 		} else{
@@ -22,14 +23,14 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryModel retrieveCategory(int categoryId) {
+	public CategoryModel retrieveCategory(String categoryId) {
 		return categoryDAO.retrieveCategory(categoryId);
 		
 	}
 
 	@Override
-	public String updateCategory(CategoryModel categoryModel) {
-		if(categoryDAO.updateCategory(categoryModel) > 0){
+	public String updateCategory(CategoryRestModel categoryModel, String categoryId) {
+		if(categoryDAO.updateCategory(categoryModel, categoryId) > 0){
 			return "successful";
 		} else{
 			return "failed";
@@ -37,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public String deleteCategory(int categoryId) {
+	public String deleteCategory(String categoryId) {
 		if(categoryDAO.deleteCategory(categoryId) > 0){
 			return "successful";
 		} else{

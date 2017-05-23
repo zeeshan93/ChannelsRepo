@@ -2,25 +2,17 @@ package com.compassites.channels.dao;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
-import org.apache.tika.Tika;
+//import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.compassites.channels.daoModel.ChannelModel;
-
-import com.compassites.channel.utils.MessageUtil;
 
 @Repository
 public class ChannelDAOImpl implements ChannelDAO {

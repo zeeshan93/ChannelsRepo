@@ -1,4 +1,4 @@
-package com.compassites.channel.utils;
+package com.compassites.channels.utils;
 
 
 
