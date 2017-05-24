@@ -26,11 +26,12 @@ public class CategoryController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public JSONObject createCategory(@RequestBody @Valid CategoryRestModel categoryModel, BindingResult bindingResult) {
-		JSONObject jsonObj = new JSONObject();
 
 		if (bindingResult.hasErrors()) {
 			return JsonObject.getJsonObjectFromBindingResult(bindingResult);
 		}
+
+		JSONObject jsonObj = new JSONObject();
 		JsonObject.getJsonObjectFromBindingResult(bindingResult);
 		jsonObj.put("status", 200);
 		jsonObj.put("message", "Adding category " + categoryService.createCategory(categoryModel));
@@ -47,10 +48,14 @@ public class CategoryController {
 		}
 	}
 
-	
 	@RequestMapping(value = "/update", method = RequestMethod.PATCH)
 	public JSONObject updateCategory(@RequestBody @Valid CategoryRestModel categoryModel, BindingResult bindingResult,
 			@RequestParam("categoryId") String categoryId) {
+
+		if (bindingResult.hasErrors()) {
+			return JsonObject.getJsonObjectFromBindingResult(bindingResult);
+		}
+
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
 		jsonObj.put("message", "Updating category for " + categoryModel.getCategoryName() + " is "

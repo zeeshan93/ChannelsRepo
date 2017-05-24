@@ -1,7 +1,10 @@
 package com.compassites.channels.controller;
 
+import javax.validation.Valid;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +15,7 @@ import com.compassites.channels.Exception.AgeGroupException;
 import com.compassites.channels.daoModel.AgeGroupModel;
 import com.compassites.channels.restModel.AgeGroupRestModel;
 import com.compassites.channels.service.AgeGroupService;
+import com.compassites.channels.utils.JsonObject;
 
 @RestController
 @RequestMapping("/age-group")
@@ -21,7 +25,13 @@ public class AgeGroupController {
 	private AgeGroupService ageGroupService;
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public JSONObject createCategory(@RequestBody AgeGroupRestModel ageGroupRestModel) throws AgeGroupException {
+	public JSONObject createCategory(@RequestBody @Valid AgeGroupRestModel ageGroupRestModel,
+			BindingResult bindingResult) throws AgeGroupException {
+
+		if (bindingResult.hasErrors()) {
+			return JsonObject.getJsonObjectFromBindingResult(bindingResult);
+		}
+
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
 		try {
@@ -43,8 +53,13 @@ public class AgeGroupController {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.PATCH)
-	public JSONObject updateAgeGroupEntry(@RequestBody AgeGroupRestModel ageGroupRestModel,
-			@RequestParam("ageGroupId") String ageGroupId) {
+	public JSONObject updateAgeGroupEntry(@RequestBody @Valid AgeGroupRestModel ageGroupRestModel,
+			BindingResult bindingResult, @RequestParam("ageGroupId") String ageGroupId) {
+
+		if (bindingResult.hasErrors()) {
+			return JsonObject.getJsonObjectFromBindingResult(bindingResult);
+		}
+
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
 		jsonObj.put("message",

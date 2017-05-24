@@ -1,7 +1,10 @@
 package com.compassites.channels.controller;
 
+import javax.validation.Valid;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +17,7 @@ import com.compassites.channels.Exception.ChannelException;
 import com.compassites.channels.daoModel.ChannelModel;
 import com.compassites.channels.restModel.ChannelRestModel;
 import com.compassites.channels.service.ChannelService;
+import com.compassites.channels.utils.JsonObject;
 
 
 @RestController
@@ -24,7 +28,12 @@ public class ChannelController {
 
 	// Create Channels
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public JSONObject createChannel(@RequestBody ChannelRestModel channels, @RequestParam("age_group_id") String ageGroupId) {
+	public JSONObject createChannel(@RequestBody @Valid ChannelRestModel channels,BindingResult bindingResult,@RequestParam("age_group_id") String ageGroupId) {
+		
+		if (bindingResult.hasErrors()) {
+			return JsonObject.getJsonObjectFromBindingResult(bindingResult);
+		}
+		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
 		jsonObj.put("message", "Adding Channel " + channelsService.createChannels(channels, ageGroupId));
@@ -35,7 +44,11 @@ public class ChannelController {
 	// Retrieve the Lists of channels based on channel id.
 	@RequestMapping(value = "/retreive", method = RequestMethod.GET)
 	public ChannelModel retreiveChannles(@RequestParam(value = "channel_id") String channelId) throws ChannelException {
+		try {
 		return channelsService.retreiveChannels(channelId);
+		}catch(ChannelException e){
+			throw new ChannelException(e.getMessage());
+		}
 	}
     //Delete the channel by passing the channel_id
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
@@ -48,9 +61,11 @@ public class ChannelController {
 	}
    //Update the channel by passing the channel_id
 	@RequestMapping(value = "/update", method = RequestMethod.PATCH)
-	public JSONObject updateUser(@RequestBody ChannelRestModel channelModel,
+	public JSONObject updateUser(@RequestBody @Valid ChannelRestModel channelModel,BindingResult bindingResult ,
 			@RequestParam(value = "channel_id") String channelId) {
-		
+		if (bindingResult.hasErrors()) {
+			return JsonObject.getJsonObjectFromBindingResult(bindingResult);
+		}
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
 		jsonObj.put("message", "Updating channel with channel_id = " + channelId + " is "

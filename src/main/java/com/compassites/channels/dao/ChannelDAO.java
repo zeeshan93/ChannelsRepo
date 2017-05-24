@@ -17,6 +17,5 @@ public interface ChannelDAO {
 
 	public ChannelModel retreiveChannelsByName(String channelName);
 
-
 }
 

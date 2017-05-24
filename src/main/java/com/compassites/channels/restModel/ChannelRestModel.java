@@ -1,12 +1,28 @@
 package com.compassites.channels.restModel;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class ChannelRestModel {	
+	
+	@NotNull(message="Channel Created User Id should not be null")
 	private String channelCreatedUserId;
+	
+	@Size(min=3,message="Channel Title must be greater than 3 characters")
 	private String channelTitle;
+	
+	@NotNull
 	private String channelProfileImagePath;
+
+	@Size(min=5,message="Channel Description must be greater than 5 characters")
 	private String channelDescription;
+	
+	@NotNull
 	private String channelPreferGender;
+	
+	@NotNull
 	private String modifiedUserId;
+	
 	public String getChannelCreatedUserId() {
 		return channelCreatedUserId;
 	}
