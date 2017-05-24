@@ -14,6 +14,8 @@ public interface ChannelDAO {
 	public String saveProfileImage(MultipartFile profileImage,String mobnumb,String channelId);
 	public String uploadContent(MultipartFile profileImage,String mobnumb, String channel_id);
 
+	public ChannelModel retreiveChannelsByName(String channelName);
+
 
 }
 

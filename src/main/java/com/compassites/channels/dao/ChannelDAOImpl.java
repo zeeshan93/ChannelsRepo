@@ -133,5 +133,13 @@ public class ChannelDAOImpl implements ChannelDAO {
 		return fileExtension;
 	}
 
+	@Override
+	public ChannelModel retreiveChannelsByName(String channelName) {
+		String selectQuery = "select * from channels where channel_title = ?";
 
+		ChannelModel channelModel = (ChannelModel) jdbcTemplate.queryForObject(selectQuery, new Object[] { channelName },
+				new BeanPropertyRowMapper(ChannelModel.class));
+
+		return channelModel;
+	}
 }

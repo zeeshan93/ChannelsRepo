@@ -45,6 +45,17 @@ public class AgeGroupDAOImpl implements AgeGroupDAO {
 		return ageGroupModel;
 
 	}
+	
+	/*@Override
+	public AgeGroupModel retrieveAgeGroupByMinMaxAge(int minAge, int maxAge) {
+		String selectQuery = "select * from age_group where age_group_min = ? AND age_group_max = ?";
+
+		AgeGroupModel ageGroupModel = (AgeGroupModel) jdbcTemplate.queryForObject(selectQuery,
+				new Object[] { minAge, maxAge }, new BeanPropertyRowMapper(AgeGroupModel.class));
+
+		return ageGroupModel;
+
+	}*/
 
 	@Override
 	public int updateAgeGroupEntry(AgeGroupRestModel ageGroupRestModel, String ageGroupId) {
@@ -54,7 +65,7 @@ public class AgeGroupDAOImpl implements AgeGroupDAO {
 	}
 
 	@Override
-	public int deleteAgeGroupEntry(int ageGroupId) {
+	public int deleteAgeGroupEntry(String ageGroupId) {
 		String sql = ChannelConstants.deleteAgeGroupQuery;
 		return jdbcTemplate.update(sql, ageGroupId);
 	}

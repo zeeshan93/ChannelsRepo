@@ -22,10 +22,10 @@ public class ChannelController {
 
 	// Create Channels
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public JSONObject createChannel(@RequestBody ChannelRestModel channels) {
+	public JSONObject createChannel(@RequestBody ChannelRestModel channels, @RequestParam("age_group_id") String ageGroupId) {
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
-		jsonObj.put("message", "Adding Channel " + channelsService.createChannels(channels));
+		jsonObj.put("message", "Adding Channel " + channelsService.createChannels(channels, ageGroupId));
 		return jsonObj;
 		
 	}

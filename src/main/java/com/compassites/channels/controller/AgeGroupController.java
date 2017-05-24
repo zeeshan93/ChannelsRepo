@@ -47,7 +47,7 @@ public class AgeGroupController {
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public JSONObject deleteAgeGroupEntry(
-			@RequestParam(value = "ageGroupId") int ageGroupId) {
+			@RequestParam(value = "ageGroupId") String ageGroupId) {
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
 		jsonObj.put("message", "Deleting age group entry is "+ageGroupService.deleteAgeGroupEntry(ageGroupId));

@@ -11,6 +11,8 @@ public interface AgeGroupDAO {
 
 	int updateAgeGroupEntry(AgeGroupRestModel ageGroupRestModel, String ageGroupId);
 
-	int deleteAgeGroupEntry(int ageGroupId);
+	int deleteAgeGroupEntry(String ageGroupId);
+
+//	AgeGroupModel retrieveAgeGroupByMinMaxAge(int minAge, int maxAge);
 
 }

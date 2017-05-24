@@ -44,7 +44,7 @@ public class AgeGroupServiceImpl implements AgeGroupService {
 	}
 
 	@Override
-	public String deleteAgeGroupEntry(int ageGroupId) {
+	public String deleteAgeGroupEntry(String ageGroupId) {
 		if(ageGroupDAO.deleteAgeGroupEntry(ageGroupId) > 0){
 			return "successful";
 		} else{

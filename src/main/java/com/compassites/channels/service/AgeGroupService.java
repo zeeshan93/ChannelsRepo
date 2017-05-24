@@ -12,6 +12,6 @@ public interface AgeGroupService {
 
 	String updateAgeGroupEntry(AgeGroupRestModel ageGroupRestModel, String ageGroupId);
 
-	String deleteAgeGroupEntry(int ageGroupId);
+	String deleteAgeGroupEntry(String ageGroupId);
 
 }

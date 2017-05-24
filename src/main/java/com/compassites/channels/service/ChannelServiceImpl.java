@@ -1,25 +1,32 @@
 package com.compassites.channels.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.compassites.channels.dao.AgeGroupDAO;
 import com.compassites.channels.dao.ChannelDAO;
+import com.compassites.channels.daoModel.AgeGroupModel;
 import com.compassites.channels.daoModel.ChannelModel;
 import com.compassites.channels.restModel.ChannelRestModel;
 
 @Service
 public class ChannelServiceImpl implements ChannelService {
 	@Autowired
-	ChannelDAO channelsDAO;
+	private ChannelDAO channelsDAO;
+	@Autowired
+	private ChannelAgeGroupService channelAgeGroupService;
+	@Autowired
+	private AgeGroupDAO ageGroupDAO;
 
 	@Override
-	public String createChannels(ChannelRestModel channels) {
-		if (channelsDAO.createChannels(channels) > 0)
-			// insert into transaction table channel age and channel category
-			
-			return "success";
+	public String createChannels(ChannelRestModel channels, String ageGroupId) {
+		if (channelsDAO.createChannels(channels) > 0)	{
+			ChannelModel channelModel = retreiveChannelsByName(channels.getChannelTitle());
+//			AgeGroupModel ageGroupModel = ageGroupDAO.retrieveAgeGroupByMinMaxAge(5, 10);
+			channelAgeGroupService.channelAgeGroupTransaction(channelModel.getChannel_id(), ageGroupId);
+			return "success";			
+		}
 		else
 			return "failed";
 	}
@@ -27,6 +34,11 @@ public class ChannelServiceImpl implements ChannelService {
 	@Override
 	public ChannelModel retreiveChannels(String channelId) {
 		return channelsDAO.retreiveChannels(channelId);
+	}
+	
+	@Override
+	public ChannelModel retreiveChannelsByName(String channelName) {
+		return channelsDAO.retreiveChannelsByName(channelName);
 	}
 
 	@Override
