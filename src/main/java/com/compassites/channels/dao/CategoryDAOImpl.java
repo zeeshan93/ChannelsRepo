@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.compassites.channels.Exception.CategoryException;
 import com.compassites.channels.daoModel.CategoryModel;
 import com.compassites.channels.restModel.CategoryRestModel;
 import com.compassites.channels.utils.ChannelConstants;
@@ -24,17 +25,17 @@ public class CategoryDAOImpl implements CategoryDAO {
 
 		UUID uuid = UUID.randomUUID();
 		String categoryId = uuid.toString();
-		
+
 		String createdDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		createdDate = sdf.format(new Date());
-		
+
 		String sql = ChannelConstants.createCategoryQuery;
-		/*   
+		/*
 		 * 
-		 *				 ** Using query builder of insert **
+		 * ** Using query builder of insert **
 		 * 
-		 *  
+		 * 
 		 * String tableName = Tables.CATEGORY; LinkedHashMap<String, String>
 		 * paramsMap = new LinkedHashMap<>();
 		 * paramsMap.put(Columns.categoryName, categoryModel.getCategoryName());
@@ -62,19 +63,25 @@ public class CategoryDAOImpl implements CategoryDAO {
 		 * 
 		 */
 
-		return jdbcTemplate.update(sql, categoryId, categoryModel.getCategoryName(), categoryModel.getCategoryCreatedUserId(),
-				createdDate, categoryModel.getModifiedUserId());
+		return jdbcTemplate.update(sql, categoryId, categoryModel.getCategoryName(),
+				categoryModel.getCategoryCreatedUserId(), createdDate, categoryModel.getModifiedUserId());
 	}
 
 	@Override
-	public CategoryModel retrieveCategory(String categoryId) {
-		String selectQuery = ChannelConstants.selectCategoryQuery;
+	public CategoryModel retrieveCategory(String categoryId) throws CategoryException {
 
-		CategoryModel categoryModel = (CategoryModel) jdbcTemplate.queryForObject(selectQuery,
-				new Object[] { categoryId }, new BeanPropertyRowMapper(CategoryModel.class));
+		Integer count = jdbcTemplate.queryForObject("SELECT count(*) FROM category where category_id = ?",
+				Integer.class, categoryId);
+		if (count > 0) {
+			String selectQuery = ChannelConstants.selectCategoryQuery;
+			
+			CategoryModel categoryModel = (CategoryModel) jdbcTemplate.queryForObject(selectQuery,
+					new Object[] { categoryId }, new BeanPropertyRowMapper(CategoryModel.class));
+			return categoryModel;
 
-		return categoryModel;
-
+		} else {
+			throw new CategoryException("Invalid Category Id. Please Enter a valid Category Id.");
+		}
 	}
 
 	@Override

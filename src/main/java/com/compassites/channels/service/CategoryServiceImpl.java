@@ -3,6 +3,7 @@ package com.compassites.channels.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.compassites.channels.Exception.CategoryException;
 import com.compassites.channels.dao.CategoryDAO;
 import com.compassites.channels.daoModel.CategoryModel;
 import com.compassites.channels.restModel.CategoryRestModel;
@@ -23,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryModel retrieveCategory(String categoryId) {
+	public CategoryModel retrieveCategory(String categoryId) throws CategoryException {
 		return categoryDAO.retrieveCategory(categoryId);
 		
 	}

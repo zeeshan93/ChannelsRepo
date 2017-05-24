@@ -8,7 +8,7 @@ public interface AgeGroupService {
 
 	String createAgeGroup(AgeGroupRestModel ageGroupRestModel) throws AgeGroupException;
 
-	AgeGroupModel retrieveAgeGroup(String ageGroupId);
+	AgeGroupModel retrieveAgeGroup(String ageGroupId) throws AgeGroupException;
 
 	String updateAgeGroupEntry(AgeGroupRestModel ageGroupRestModel, String ageGroupId);
 

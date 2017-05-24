@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.compassites.channels.Exception.CategoryException;
+import com.compassites.channels.Exception.ChannelException;
 import com.compassites.channels.daoModel.ChannelModel;
 import com.compassites.channels.restModel.ChannelRestModel;
 import com.compassites.channels.service.ChannelService;
@@ -32,7 +34,7 @@ public class ChannelController {
 
 	// Retrieve the Lists of channels based on channel id.
 	@RequestMapping(value = "/retreive", method = RequestMethod.GET)
-	public ChannelModel retreiveChannles(@RequestParam(value = "channel_id") String channelId) {
+	public ChannelModel retreiveChannles(@RequestParam(value = "channel_id") String channelId) throws ChannelException {
 		return channelsService.retreiveChannels(channelId);
 	}
     //Delete the channel by passing the channel_id
@@ -43,7 +45,6 @@ public class ChannelController {
 		jsonObj.put("message", "Deleting Channel with channel_id = " + channelId + " is "
 				+ channelsService.deleteChannel(channelId));
 		return jsonObj;
-
 	}
    //Update the channel by passing the channel_id
 	@RequestMapping(value = "/update", method = RequestMethod.PATCH)
@@ -59,7 +60,7 @@ public class ChannelController {
    //Upload the user profile image by passing the mobile number, channel_id
 	@RequestMapping(value = "/profileImage",  headers = {"content-type=application/json"}, method = RequestMethod.POST)
 	public String uploadUserProfileImage(@RequestParam("file") MultipartFile image,
-			@RequestParam(value = "mobilenumb") String mobnumb, @RequestParam(value = "channel_id") String channelId) {
+			@RequestParam(value = "mobilenumb") String mobnumb, @RequestParam(value = "channel_id") String channelId) throws ChannelException {
 		String channel_profile_image_path = null;
 		channel_profile_image_path = channelsService.saveProfileImage(image, mobnumb, channelId);
 		ChannelModel channelModel = channelsService.retreiveChannels(channelId);

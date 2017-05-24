@@ -16,41 +16,47 @@ import com.compassites.channels.service.AgeGroupService;
 @RestController
 @RequestMapping("/age-group")
 public class AgeGroupController {
-	
+
 	@Autowired
 	private AgeGroupService ageGroupService;
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public JSONObject createCategory(@RequestBody AgeGroupRestModel ageGroupRestModel) throws AgeGroupException{
+	public JSONObject createCategory(@RequestBody AgeGroupRestModel ageGroupRestModel) throws AgeGroupException {
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
 		try {
-			jsonObj.put("message", "Adding age-group "+ageGroupService.createAgeGroup(ageGroupRestModel));
+			jsonObj.put("message", "Adding age-group " + ageGroupService.createAgeGroup(ageGroupRestModel));
 		} catch (AgeGroupException e) {
 			throw new AgeGroupException(e.getMessage());
 		}
 		return jsonObj;
 	}
-	
+
 	@RequestMapping(value = "/retrieve", method = RequestMethod.GET)
-	public AgeGroupModel retrieveAgeGroupEntry(@RequestParam(value = "ageGroupId") String ageGroupId){
-		return ageGroupService.retrieveAgeGroup(ageGroupId);
+	public AgeGroupModel retrieveAgeGroupEntry(@RequestParam(value = "ageGroupId") String ageGroupId)
+			throws AgeGroupException {
+		try {
+			return ageGroupService.retrieveAgeGroup(ageGroupId);
+		} catch (AgeGroupException e) {
+			throw new AgeGroupException(e.getMessage());
+		}
 	}
-	
+
 	@RequestMapping(value = "/update", method = RequestMethod.PATCH)
-	public JSONObject updateAgeGroupEntry(@RequestBody AgeGroupRestModel ageGroupRestModel, @RequestParam("ageGroupId") String ageGroupId){		
+	public JSONObject updateAgeGroupEntry(@RequestBody AgeGroupRestModel ageGroupRestModel,
+			@RequestParam("ageGroupId") String ageGroupId) {
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
-		jsonObj.put("message", "Updating age group entry is "+ageGroupService.updateAgeGroupEntry(ageGroupRestModel, ageGroupId));
+		jsonObj.put("message",
+				"Updating age group entry is " + ageGroupService.updateAgeGroupEntry(ageGroupRestModel, ageGroupId));
 		return jsonObj;
 	}
-	
+
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public JSONObject deleteAgeGroupEntry(
-			@RequestParam(value = "ageGroupId") String ageGroupId) {
+	public JSONObject deleteAgeGroupEntry(@RequestParam(value = "ageGroupId") String ageGroupId) {
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", 200);
-		jsonObj.put("message", "Deleting age group entry is "+ageGroupService.deleteAgeGroupEntry(ageGroupId));
+		jsonObj.put("message", "Deleting age group entry is " + ageGroupService.deleteAgeGroupEntry(ageGroupId));
 		return jsonObj;
 	}
 

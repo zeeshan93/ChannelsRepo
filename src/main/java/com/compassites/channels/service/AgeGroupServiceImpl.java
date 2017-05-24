@@ -30,7 +30,7 @@ public class AgeGroupServiceImpl implements AgeGroupService {
 	}
 
 	@Override
-	public AgeGroupModel retrieveAgeGroup(String ageGroupId) {
+	public AgeGroupModel retrieveAgeGroup(String ageGroupId) throws AgeGroupException {
 		return ageGroupDAO.retrieveAgeGroup(ageGroupId);
 	}
 

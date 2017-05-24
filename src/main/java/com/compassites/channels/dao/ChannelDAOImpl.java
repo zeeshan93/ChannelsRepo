@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.compassites.channels.Exception.ChannelException;
 import com.compassites.channels.daoModel.ChannelModel;
 import com.compassites.channels.restModel.ChannelRestModel;
 
@@ -53,15 +54,21 @@ public class ChannelDAOImpl implements ChannelDAO {
 	}
 
 	@Override
-	public ChannelModel retreiveChannels(String channelId) {
+	public ChannelModel retreiveChannels(String channelId) throws ChannelException {
 
+		Integer count = jdbcTemplate.queryForObject("SELECT count(*) FROM channels where channel_id = ?",
+				Integer.class, channelId);
+		
 		String selectQuery = "select * from channels where channel_id = ?";
 
-		ChannelModel channelModel = (ChannelModel) jdbcTemplate.queryForObject(selectQuery, new Object[] { channelId },
-				new BeanPropertyRowMapper(ChannelModel.class));
-
-		return channelModel;
-
+		if (count > 0) {
+			ChannelModel channelModel = (ChannelModel) jdbcTemplate.queryForObject(selectQuery, new Object[] { channelId },
+					new BeanPropertyRowMapper(ChannelModel.class));
+			return channelModel;
+		}
+		else{
+			throw new ChannelException("Invalid Channel Id. Please Enter a valid Channel Id. ");
+		}
 	}
 
 	@Override

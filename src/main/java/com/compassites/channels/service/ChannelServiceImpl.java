@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.compassites.channels.Exception.ChannelException;
 import com.compassites.channels.dao.AgeGroupDAO;
 import com.compassites.channels.dao.ChannelDAO;
-import com.compassites.channels.daoModel.AgeGroupModel;
 import com.compassites.channels.daoModel.ChannelModel;
 import com.compassites.channels.restModel.ChannelRestModel;
 
@@ -32,7 +32,7 @@ public class ChannelServiceImpl implements ChannelService {
 	}
 
 	@Override
-	public ChannelModel retreiveChannels(String channelId) {
+	public ChannelModel retreiveChannels(String channelId) throws ChannelException{
 		return channelsDAO.retreiveChannels(channelId);
 	}
 	
