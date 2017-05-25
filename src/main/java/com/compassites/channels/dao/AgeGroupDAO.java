@@ -14,6 +14,8 @@ public interface AgeGroupDAO {
 
 	int deleteAgeGroupEntry(String ageGroupId);
 
+	String getAgeGroupIdFromAge(int age);
+
 //	AgeGroupModel retrieveAgeGroupByMinMaxAge(int minAge, int maxAge);
 
 

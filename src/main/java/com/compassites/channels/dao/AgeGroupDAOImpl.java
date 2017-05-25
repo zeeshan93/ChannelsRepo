@@ -2,9 +2,11 @@ package com.compassites.channels.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,7 @@ import com.compassites.channels.utils.ChannelConstants;
 public class AgeGroupDAOImpl implements AgeGroupDAO {
 
 	@Autowired
+	@Qualifier("channelsJdbcTemplate") 
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
@@ -77,6 +80,16 @@ public class AgeGroupDAOImpl implements AgeGroupDAO {
 	public int deleteAgeGroupEntry(String ageGroupId) {
 		String sql = ChannelConstants.deleteAgeGroupQuery;
 		return jdbcTemplate.update(sql, ageGroupId);
+	}
+
+	@Override
+	public String getAgeGroupIdFromAge(int age) {
+		String selectQuery = ChannelConstants.selectAgeGroupIdFromAgeGroupQuery;
+		
+		AgeGroupModel ageGroupModel = (AgeGroupModel) jdbcTemplate.queryForObject(selectQuery,
+				new Object[] { age }, new BeanPropertyRowMapper(AgeGroupModel.class));
+		
+		return ageGroupModel.getAgeGroupId();
 	}
 
 }

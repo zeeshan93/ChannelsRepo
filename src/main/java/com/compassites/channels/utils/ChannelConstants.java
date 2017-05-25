@@ -40,4 +40,7 @@ public final class ChannelConstants {
 	public static final String selectAgeGroupQuery = "select * from age_group where age_group_id = ?";
 	public static final String updateAgeGroupQuery = "UPDATE age_group SET age_group_min = ? , age_group_max = ? , age_group_description = ? , modified_user_id = ? where age_group_id = ?";
 	public static final String deleteAgeGroupQuery = "DELETE FROM age_group where age_group_id = ?";
+	public static final String selectAgeGroupIdFromAgeGroupQuery = "SELECT age_group_id FROM channels.age_group WHERE ? between age_group_min and age_group_max";
+	
+	public static final String selectVcardByUserId = "SELECT vcard from vcard where username = ?";
 }

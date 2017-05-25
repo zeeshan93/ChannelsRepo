@@ -52,4 +52,10 @@ public class AgeGroupServiceImpl implements AgeGroupService {
 		}
 	}
 
+	@Override
+	public String getAgeGroupIdFromAge(int age) {
+		return ageGroupDAO.getAgeGroupIdFromAge(age);
+		
+	}
+
 }

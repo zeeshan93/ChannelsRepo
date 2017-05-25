@@ -1,5 +1,8 @@
 package com.compassites.channels.controller;
 
+import java.text.ParseException;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.json.simple.JSONObject;
@@ -16,7 +19,12 @@ import com.compassites.channels.Exception.CategoryException;
 import com.compassites.channels.Exception.ChannelException;
 import com.compassites.channels.daoModel.ChannelModel;
 import com.compassites.channels.restModel.ChannelRestModel;
+import com.compassites.channels.service.AgeGroupService;
+import com.compassites.channels.service.ChannelAgeGroupMappingService;
 import com.compassites.channels.service.ChannelService;
+import com.compassites.channels.service.UserService;
+import com.compassites.channels.service.XStreamParsingService;
+import com.compassites.channels.utils.ChannelsUtil;
 import com.compassites.channels.utils.JsonObject;
 
 
@@ -25,6 +33,18 @@ import com.compassites.channels.utils.JsonObject;
 public class ChannelController {
 	@Autowired
 	ChannelService channelsService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private AgeGroupService ageGroupService;
+	
+	@Autowired
+	private ChannelAgeGroupMappingService channelAgeGroupMappingService;
+	
+	@Autowired
+	private XStreamParsingService xStreamParsingService;
 
 	// Create Channels
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -88,6 +108,28 @@ public class ChannelController {
 		channelRestModel.setChannelTitle(channelModel.getChannel_title());
 		channelRestModel.setModifiedUserId(channelModel.getModified_user_id());
 		return channelsService.updateChannels(channelRestModel, channelId);
+
+	}
+	
+	@RequestMapping(value = "/fetch", method = RequestMethod.GET)
+	public JSONObject fetchAllChannels(@RequestParam("userId") String userId) throws ParseException {
+		JSONObject json = new JSONObject();
+		//get the date of birth from vcard
+		String dob = xStreamParsingService.getDOBfromVcardXML(userService.retreiveUserVcardDetails(userId));
+		//calculate the age
+		int age = ChannelsUtil.calculateAgeFromDOB(dob);
+		//get the age group id
+		String ageGroupId = ageGroupService.getAgeGroupIdFromAge(age);
+		//get channel ids for that age group
+		List<String> channelIds = channelAgeGroupMappingService.getChannelIds(ageGroupId);
+		//get channels based on that channel id
+		List<ChannelModel> channelModelList = channelsService.getChannelDetails(channelIds); 
+		if(channelModelList.isEmpty() || channelModelList == null){
+			json.put("Channels","No Channels available");
+		} else{
+			json.put("Channels", channelsService.getChannelDetails(channelIds));
+		}
+		return json;
 
 	}
 

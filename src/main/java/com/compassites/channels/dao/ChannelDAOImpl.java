@@ -3,11 +3,14 @@ package com.compassites.channels.dao;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 //import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -23,6 +26,7 @@ import com.compassites.channels.restModel.ChannelRestModel;
 public class ChannelDAOImpl implements ChannelDAO {
 
 	@Autowired
+	@Qualifier("channelsJdbcTemplate") 
 	private JdbcTemplate jdbcTemplate;
 	/*
 	 * @Autowired 
@@ -148,5 +152,21 @@ public class ChannelDAOImpl implements ChannelDAO {
 				new BeanPropertyRowMapper(ChannelModel.class));
 
 		return channelModel;
+	}
+
+	@Override
+	public List<ChannelModel> getChannelDetails(List<String> channelIds) {
+		List<ChannelModel> channelModelList = new ArrayList<>();
+		
+		String selectQuery = "select * from channels where channel_id = ?";
+		
+		for(String channelId : channelIds){
+			ChannelModel channelModel = (ChannelModel) jdbcTemplate.queryForObject(selectQuery, new Object[] { channelId },
+					new BeanPropertyRowMapper(ChannelModel.class));
+			
+			channelModelList.add(channelModel);
+		}
+		
+		return channelModelList;
 	}
 }

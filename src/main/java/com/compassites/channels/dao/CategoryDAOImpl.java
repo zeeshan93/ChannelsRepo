@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,7 @@ import com.compassites.channels.utils.ChannelConstants;
 public class CategoryDAOImpl implements CategoryDAO {
 
 	@Autowired
+	@Qualifier("channelsJdbcTemplate") 
 	private JdbcTemplate jdbcTemplate;
 
 	@Override

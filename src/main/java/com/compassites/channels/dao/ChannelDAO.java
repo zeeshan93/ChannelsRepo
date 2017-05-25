@@ -1,5 +1,7 @@
 package com.compassites.channels.dao;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.compassites.channels.Exception.ChannelException;
@@ -16,6 +18,8 @@ public interface ChannelDAO {
 	public String uploadContent(MultipartFile profileImage,String mobnumb, String channel_id);
 
 	public ChannelModel retreiveChannelsByName(String channelName);
+
+	public List<ChannelModel> getChannelDetails(List<String> channelIds);
 
 }
 

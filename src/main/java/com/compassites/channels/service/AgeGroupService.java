@@ -14,4 +14,6 @@ public interface AgeGroupService {
 
 	String deleteAgeGroupEntry(String ageGroupId);
 
+	String getAgeGroupIdFromAge(int age);
+
 }

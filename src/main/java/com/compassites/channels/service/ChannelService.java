@@ -1,5 +1,7 @@
 package com.compassites.channels.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.compassites.channels.Exception.ChannelException;
@@ -17,6 +19,7 @@ public interface ChannelService {
 	public String saveProfileImage(MultipartFile profileImage,String mobnumb, String channelId);
 	public String uploadContent(MultipartFile profileImage,String mobnumb, String channel_id);
 	ChannelModel retreiveChannelsByName(String channelName);
+	public List<ChannelModel> getChannelDetails(List<String> channelIds);
 
 }
 	

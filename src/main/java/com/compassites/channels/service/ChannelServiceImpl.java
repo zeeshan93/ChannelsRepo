@@ -1,5 +1,7 @@
 package com.compassites.channels.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,6 +69,11 @@ public class ChannelServiceImpl implements ChannelService {
 	public String uploadContent(MultipartFile profileImage, String mobnumb, String channelId) {
 
 		return channelsDAO.uploadContent(profileImage, mobnumb, channelId);
+	}
+
+	@Override
+	public List<ChannelModel> getChannelDetails(List<String> channelIds) {
+		return channelsDAO.getChannelDetails(channelIds);
 	}
 
 	

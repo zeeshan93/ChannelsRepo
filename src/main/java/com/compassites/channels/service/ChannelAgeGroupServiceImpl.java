@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ChannelAgeGroupServiceImpl implements ChannelAgeGroupService {
 
 	@Autowired
+	@Qualifier("channelsJdbcTemplate") 
 	private JdbcTemplate jdbcTemplate;
 
 	Logger logger = LoggerFactory.getLogger(ChannelAgeGroupServiceImpl.class);
